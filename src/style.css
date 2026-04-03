@@ -130,6 +130,30 @@ canvas {
   50%       { opacity: 0; }
 }
 
+/* ── Pause overlay ── */
+#pause-overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 4, 14, 0.62);
+  z-index: 15;
+  pointer-events: none;
+}
+#pause-text {
+  font-size: 28px;
+  letter-spacing: 0.45em;
+  color: rgba(70, 200, 150, 0.80);
+}
+#pause-sub {
+  margin-top: 14px;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: rgba(70, 200, 150, 0.40);
+}
+
 /* ── Tooltip ── */
 #tooltip {
   position: absolute;

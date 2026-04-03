@@ -1,6 +1,7 @@
 import { Creature } from './creature';
 import { DNA, FamilyName, makeOffspringDNA } from './dna';
 import { SpatialGrid } from './grid';
+import { env } from './env';
 
 // ── Configuration ────────────────────────────────────────────────
 
@@ -155,6 +156,19 @@ export function applyBehaviors(
       }
     }
 
+    // ── Gravity well / repulsor ───────────────────────────────────
+    if (env.gravField) {
+      const gf  = env.gravField;
+      const gdx = gf.x - c.x;
+      const gdy = gf.y - c.y;
+      const gd  = Math.sqrt(gdx * gdx + gdy * gdy) + 1;
+      const dir = gf.attract ? 1 : -1;
+      // Force falls off with distance; closer = stronger pull/push
+      const gstr = dir * 95 / (gd + 55);
+      huntX += (gdx / gd) * gstr;
+      huntY += (gdy / gd) * gstr;
+    }
+
     // ── Combine and normalise forces ──────────────────────────────
     let fx = sepX * W_SEP;
     let fy = sepY * W_SEP;
@@ -164,6 +178,10 @@ export function applyBehaviors(
       if (aliN > 0) { fx += (aliX / aliN) * W_ALI; fy += (aliY / aliN) * W_ALI; }
       fx += huntX * W_HUNT + fleeX * W_FLEE;
       fy += huntY * W_HUNT + fleeY * W_FLEE;
+    } else {
+      // Titans also respond to gravity field (they're too big to ignore it)
+      fx += huntX * 0.6;
+      fy += huntY * 0.6;
     }
 
     const mag = Math.sqrt(fx * fx + fy * fy);

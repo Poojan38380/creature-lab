@@ -1,6 +1,6 @@
 # Creature Lab — Implementation Status
 
-> Last updated: 2026-04-04
+> Last updated: 2026-04-04 (Phase 3)
 
 ---
 
@@ -10,7 +10,7 @@
 |-------|--------|-------------|
 | 1 — Foundation | ✅ Complete | Single creature spawn, DNA, locomotion, UI |
 | 2 — Ecosystem Behaviors | ✅ Complete | Food chains, flocking, energy, reproduction |
-| 3 — Environmental Events | ⬜ Not started | Punctuation-triggered world events |
+| 3 — Environmental Events | ✅ Complete | Punctuation-triggered world events |
 | 4 — UI/UX Polish | ⬜ Not started | Themes, panels, design layer |
 | 5 — Sharing & Extras | ⬜ Not started | URL seeds, gallery, export, easter eggs |
 
@@ -163,17 +163,55 @@ Titan  →  immune (never hunted, never hunts)
 
 ---
 
-## Phase 3 — Environmental Events ⬜
+## Phase 3 — Environmental Events ✅
 
-**Status: Not started**
+**Completed: 2026-04-04**
 
-### Planned
+### What was built
 
-- Punctuation key dispatcher
-- `.` day/night toggle, `!` earthquake shockwave, `?` confusion field
-- `,` rain particles, `;` spore mutation burst, `:` slow-motion
-- `(` / `)` gravity well / repulsor
-- `ENTER` genesis event, `SPACE` pause
+#### New files
+| File | Role |
+|------|------|
+| `src/env.ts` | `EnvState` singleton, `tickEnv()`, `drawEnvEffects(p)`, rain helpers |
+| `src/events.ts` | `isPunctuation()`, `handlePunctuation(key, creatures)` dispatcher |
+
+Architecture avoids import cycles: `env.ts` has no creature imports; `events.ts` imports both creature + env; `creature.ts` and `behaviors.ts` import env only.
+
+#### Event map
+
+| Key | Event | Implementation |
+|-----|-------|----------------|
+| `.` | **Day/Night Toggle** | Flips `env.isNight`; background fill shifts from `hsl(240,40,2)` to `hsl(232,55,5)` — gradual indigo wash via the persistence rect |
+| `!` | **Earthquake** | `env.shake = 24` (decays 18% per frame via `resetMatrix` + random translate); shockwave ring expands from canvas center; all creatures scatter to random headings |
+| `?` | **Confusion Field** | `env.confusion = 300` (5 s); in `creature.update()`: steering inverted ×1.3 + 0.52 rad random heading noise each tick; purple tint overlay |
+| `,` | **Rain** | 90 diagonal rain streaks fall for 8 s; vowels gain ×1.18 speed, all others ×0.68 |
+| `;` | **Spore Cloud** | `env.sporeShift` set to ±28–80 hue degrees; applied as `effDna` spread in `creature.draw()` affecting all colour passes; decays via `sporeShift *= 0.991` over 4.3 s |
+| `:` | **Freeze Frame** | `env.slowMo = 0.20`; scales `noiseT` advancement, speed, and death animation rate; lerps back to 1.0 at +0.0028/tick (~6 s) |
+| `(` | **Gravity Well** | `env.gravField` set attract=true at canvas center, 4 s TTL; in `behaviors.ts`: directional force `95/(dist+55)` added before normalisation |
+| `)` | **Repulsor** | Same as `(` with `attract=false`; creatures scatter outward |
+| `ENTER` | **Genesis** | `env.genesisPulse = 70` (canvas flash); all creatures `energy += 0.35`, `reproCD = 0` → mass reproduction burst next frame |
+| `SPACE` | **Pause / Resume** | `env.paused` toggle; pause overlay shown; `tickEnv`, `applyBehaviors`, and `c.update()` all skip while paused |
+
+#### Screen shake
+`sk.resetMatrix()` called at start of every draw frame; random translate of `±shake` px applied when `env.shake > 0.5`; shake decays ×0.82 per frame.
+
+#### Spore hue shift
+Avoids modifying `dna` (readonly); instead creates `effDna = { ...dna, hue: shifted }` at draw time only when `env.sporeShift !== 0`. All four draw helpers receive `effDna`. Trails use original `dna.hue` (deliberate — old trails show pre-mutation colours).
+
+#### Input handling
+- `keydown`: intercepts `Enter` and `Space` with `preventDefault` (prevents scroll/form-submit)
+- `input` event: `isPunctuation(char)` check routes to `handlePunctuation` before `spawnChar`; `insertLineBreak` inputType handles mobile Enter
+
+#### File changes
+| File | Change |
+|------|--------|
+| `src/env.ts` | New |
+| `src/events.ts` | New |
+| `src/creature.ts` | Import env; slowMo/confusion/rain in update(); spore effDna in draw() |
+| `src/behaviors.ts` | Import env; gravity well force before normalisation |
+| `src/main.ts` | Import env/events; keydown + input handler updated; draw loop wired |
+| `index.html` | `#pause-overlay` div added |
+| `src/style.css` | Pause overlay styles |
 
 ---
 
@@ -226,6 +264,8 @@ creature-lab/
     ├── context.ts    ← shared noise fn + W/H helpers (live ES module bindings)
     ├── grid.ts       ← SpatialGrid — O(1) neighbour lookup (Phase 2)
     ├── behaviors.ts  ← ecosystem behavior engine: steering, energy, reproduction (Phase 2)
+    ├── env.ts        ← EnvState singleton, tickEnv, drawEnvEffects (Phase 3)
+    ├── events.ts     ← punctuation event dispatcher (Phase 3)
     └── style.css     ← all styles (extracted from old monolithic index.html)
 ```
 

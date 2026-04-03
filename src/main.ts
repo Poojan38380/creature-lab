@@ -8,6 +8,8 @@ import { setNoise, setSize } from './context';
 import { DNA } from './dna';
 import { SpatialGrid } from './grid';
 import { applyBehaviors, SpawnRequest } from './behaviors';
+import { env, tickEnv, drawEnvEffects } from './env';
+import { isPunctuation, handlePunctuation } from './events';
 
 // ── State ────────────────────────────────────────────────────────
 
@@ -63,8 +65,14 @@ const inputEl = document.getElementById('hidden-input') as HTMLInputElement;
 inputEl.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.key === 'Backspace') {
-    e.preventDefault(); // prevent browser back-navigation gesture
+    e.preventDefault();
     handleBackspace();
+  } else if (e.key === 'Enter') {
+    e.preventDefault(); // prevent form submit / newline
+    handlePunctuation('Enter', creatures);
+  } else if (e.key === ' ') {
+    e.preventDefault(); // prevent page scroll
+    handlePunctuation(' ', creatures);
   }
 });
 
@@ -72,13 +80,17 @@ inputEl.addEventListener('input', (e: Event) => {
   const ie = e as InputEvent;
 
   if (ie.inputType === 'deleteContentBackward') {
-    // Mobile backspace comes through here (key was 'Unidentified' in keydown)
     handleBackspace();
+  } else if (ie.inputType === 'insertLineBreak') {
+    // Mobile Enter
+    handlePunctuation('Enter', creatures);
   } else if (ie.data) {
-    for (const char of ie.data) spawnChar(char);
+    for (const char of ie.data) {
+      if (isPunctuation(char)) handlePunctuation(char, creatures);
+      else spawnChar(char);
+    }
   }
 
-  // Always clear so the input never accumulates real text
   inputEl.value = '';
 });
 
@@ -138,26 +150,41 @@ new p5((sk: p5) => {
   sk.windowResized = (): void => { syncSize(); };
 
   sk.draw = (): void => {
-    // Soft persistence — motion-blur trail effect
-    sk.fill(240, 40, 2, 0.2);
+    if (!env.paused) tickEnv();
+
+    // Reset transform each frame so screen shake doesn't accumulate
+    sk.resetMatrix();
+    if (env.shake > 0.5) {
+      sk.translate(
+        (Math.random() - 0.5) * env.shake,
+        (Math.random() - 0.5) * env.shake,
+      );
+    }
+
+    // Soft persistence — night mode shifts background to deep indigo
     sk.noStroke();
+    if (env.isNight) sk.fill(232, 55, 5, 0.2);
+    else             sk.fill(240, 40, 2, 0.2);
     sk.rect(0, 0, sk.width, sk.height);
 
-    // Ecosystem behaviours: steering forces, energy, reproduction
-    applyBehaviors(creatures, grid, spawnOffspring);
+    // Ecosystem behaviours (skipped while paused)
+    if (!env.paused) applyBehaviors(creatures, grid, spawnOffspring);
 
     updateTrails(creatures);
     drawTrails(sk);
 
     for (let i = creatures.length - 1; i >= 0; i--) {
       const c = creatures[i];
-      c.update();
+      if (!env.paused) c.update();
       c.draw(sk);
       if (!c.alive) {
         totalDead++;
         creatures.splice(i, 1);
       }
     }
+
+    // Environmental effect overlays (shockwaves, rain, tints…)
+    drawEnvEffects(sk);
 
     if (sk.frameCount % 15 === 0) {
       updateHUD(

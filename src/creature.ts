@@ -2,6 +2,7 @@ import p5 from 'p5';
 import { buildDNA, DNA } from './dna';
 import { Particle } from './particles';
 import { noise, W, H } from './context';
+import { env } from './env';
 
 export class Creature {
   readonly id: number;
@@ -59,14 +60,15 @@ export class Creature {
     this.spawnT = Math.min(1, this.spawnT + 0.05);
 
     if (this.dying) {
-      this.dyingT    = Math.min(1, this.dyingT + 0.038);
+      // Slow-mo also stretches out the death animation
+      this.dyingT    = Math.min(1, this.dyingT + 0.038 * env.slowMo);
       this.particles = this.particles.filter(p => { p.step(); return !p.dead; });
       if (this.dyingT >= 1 && this.particles.length === 0) this.alive = false;
       return;
     }
 
     this.age++;
-    this.noiseT += 0.0038;
+    this.noiseT += 0.0038 * env.slowMo;
 
     // Perlin noise steering
     const nx = noise(this.x * this.dna.noiseScale + this.noiseT, this.y * this.dna.noiseScale);
@@ -75,21 +77,30 @@ export class Creature {
 
     // Behavior steering force → blend into targetH
     if (this.steerX !== 0 || this.steerY !== 0) {
+      // Confusion: invert steering (creatures flee flockmates, chase predators)
+      if (env.confusion > 0) { this.steerX *= -1.3; this.steerY *= -1.3; }
       const bh = Math.atan2(this.steerY, this.steerX);
       let bd = bh - this.targetH;
       bd = ((bd + Math.PI) % (Math.PI * 2)) - Math.PI;
-      this.targetH += bd * 0.14;   // stronger pull than noise alone
+      this.targetH += bd * 0.14;
       this.steerX = 0;
       this.steerY = 0;
     }
+
+    // Confusion: extra random heading chaos
+    if (env.confusion > 0) this.targetH += (Math.random() - 0.5) * 0.52;
 
     // Smooth heading interpolation (shortest arc)
     let d = this.targetH - this.heading;
     d = ((d + Math.PI) % (Math.PI * 2)) - Math.PI;
     this.heading += d * 0.07;
 
-    this.x += Math.cos(this.heading) * this.dna.speed;
-    this.y += Math.sin(this.heading) * this.dna.speed;
+    // Speed — scaled by slow-mo and rain
+    let speedMul = env.slowMo;
+    if (env.rain) speedMul *= this.dna.family === 'vowel' ? 1.18 : 0.68;
+
+    this.x += Math.cos(this.heading) * this.dna.speed * speedMul;
+    this.y += Math.sin(this.heading) * this.dna.speed * speedMul;
 
     // Boundary bounce
     const m    = this.dna.size * 1.8;
@@ -117,21 +128,26 @@ export class Creature {
 
     const s = dna.size * scl;
 
+    // Spore hue shift — shift all colour calls while active
+    const effDna = env.sporeShift !== 0
+      ? { ...dna, hue: ((dna.hue + env.sporeShift) % 360 + 360) % 360 }
+      : dna;
+
     p.push();
     p.translate(x, y);
     p.rotate(heading + Math.PI * 0.5);
 
-    this._drawGlow(p, s, alph, dna);
-    this._drawAppendages(p, s, alph, age, dna);
-    this._drawBody(p, s, alph, age, dna);
-    this._drawEyes(p, s, alph, age, dna);
+    this._drawGlow(p, s, alph, effDna);
+    this._drawAppendages(p, s, alph, age, effDna);
+    this._drawBody(p, s, alph, age, effDna);
+    this._drawEyes(p, s, alph, age, effDna);
 
     p.pop();
 
     // Selection ring (hover)
     if (this.hovered) {
       p.noFill();
-      p.stroke(dna.hue, dna.sat, 90, 0.35);
+      p.stroke(effDna.hue, effDna.sat, 90, 0.35);
       p.strokeWeight(1.2);
       p.ellipse(x, y, s * 3.5, s * 3.5);
     }
