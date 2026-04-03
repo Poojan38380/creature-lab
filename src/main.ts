@@ -3,7 +3,7 @@ import './style.css';
 
 import { Creature } from './creature';
 import { updateTrails, drawTrails } from './trails';
-import { hideHint, initHint, rebuildSequence, updateHUD, updateTooltip } from './ui';
+import { rebuildSequence, updateHUD, updateTooltip } from './ui';
 import { setNoise, setSize } from './context';
 import { DNA } from './dna';
 import { SpatialGrid } from './grid';
@@ -26,17 +26,19 @@ const grid = new SpatialGrid(120);
 let spawnIdx     = 0;
 let totalSpawned = 0;
 let totalDead    = 0;
-let hintVisible  = true;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
 const quickGuideEl = document.getElementById('quick-guide');
+const terminalEl   = document.getElementById('terminal');
+
 function setQuickGuide(visible: boolean): void {
   quickGuideEl?.classList.toggle('hidden', !visible);
+  // Pulse the terminal border to draw the user's eye when canvas is empty
+  terminalEl?.classList.toggle('attract', visible);
 }
 
 function spawnChar(char: string): void {
-  if (hintVisible) { hideHint(); hintVisible = false; }
   setQuickGuide(false);
   const c = new Creature(char, spawnIdx++);
   creatures.push(c);
@@ -149,7 +151,8 @@ new p5((sk: p5) => {
     // visualViewport fires when the on-screen keyboard appears/disappears
     window.visualViewport?.addEventListener('resize', syncSize);
 
-    initHint();
+    // Start with terminal attracting attention
+    setQuickGuide(true);
   };
 
   // p5's windowResized fires on orientation change / browser resize

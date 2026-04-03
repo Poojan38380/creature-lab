@@ -5,7 +5,6 @@ import { DNA } from './dna';
 
 const seqEl   = document.getElementById('seq')!;
 const caretEl = document.getElementById('caret')!;
-const hintEl  = document.getElementById('hint')!;
 const popEl   = document.getElementById('hpop')!;
 const spawnEl = document.getElementById('hspawn')!;
 const deadEl  = document.getElementById('hdead')!;
@@ -13,14 +12,6 @@ const tipEl   = document.getElementById('tooltip')!;
 
 // ── Exported functions ────────────────────────────────────────────
 
-export function hideHint(): void {
-  hintEl.style.opacity = '0';
-}
-
-export function initHint(): void {
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  hintEl.textContent = isTouch ? 'TAP HERE TO START TYPING' : 'START TYPING TO SPAWN CREATURES';
-}
 
 export function rebuildSequence(typed: ReadonlyArray<{ char: string; dna: DNA }>): void {
   while (seqEl.firstChild) seqEl.removeChild(seqEl.firstChild);

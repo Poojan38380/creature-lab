@@ -39,18 +39,6 @@ canvas {
   border-color: rgba(70, 200, 150, 0.60);
 }
 
-/* ── Hint ── */
-#hint {
-  position: absolute;
-  top: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(140, 210, 255, 0.25);
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  white-space: nowrap;
-  transition: opacity 1.4s ease;
-}
 
 /* ── HUD ── */
 #hud {
@@ -75,14 +63,27 @@ canvas {
   bottom: 0; left: 0; right: 0;
   pointer-events: auto;
   padding: 13px 28px 15px;
-  background: rgba(4, 4, 12, 0.9);
-  border-top: 1px solid rgba(70, 190, 150, 0.1);
+  background: rgba(4, 4, 12, 0.92);
+  border-top: 1px solid rgba(70, 190, 150, 0.12);
   display: flex;
   align-items: center;
   gap: 14px;
   min-height: 56px;
-  /* needed so hidden-input can be positioned absolute within */
-  position: absolute;
+  transition: border-top-color 0.5s, box-shadow 0.5s;
+}
+/* Pulsing glow when canvas is empty — draw eyes to the input */
+#terminal.attract {
+  border-top-color: rgba(70, 200, 150, 0.60);
+  box-shadow: 0 -1px 28px rgba(70, 200, 150, 0.14), 0 -1px 6px rgba(70, 200, 150, 0.20);
+  animation: terminal-breathe 2s ease-in-out infinite;
+}
+#terminal.attract #prompt {
+  color: rgba(70, 200, 150, 0.95);
+  text-shadow: 0 0 10px rgba(70, 200, 150, 0.40);
+}
+@keyframes terminal-breathe {
+  0%, 100% { box-shadow: 0 -1px 18px rgba(70, 200, 150, 0.10), 0 -1px 4px rgba(70, 200, 150, 0.15); }
+  50%       { box-shadow: 0 -1px 38px rgba(70, 200, 150, 0.22), 0 -1px 8px rgba(70, 200, 150, 0.30); }
 }
 
 /* ── Hidden input (keyboard trigger for mobile + desktop) ── */
