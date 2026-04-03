@@ -20,14 +20,26 @@ export class Creature {
   particles: Particle[] = [];
   hovered = false;
 
-  constructor(char: string, index: number) {
+  // ── Phase 2: ecosystem fields ──────────────────────────────────
+  energy  = 1.0;   // 0 → 1; 0 = starvation death
+  steerX  = 0;     // behavior force X — set by behaviors.ts, consumed by update()
+  steerY  = 0;     // behavior force Y
+  reproCD = 0;     // frames until next reproduction attempt
+
+  /**
+   * @param charOrDNA  Character string (normal spawn) or pre-built DNA (offspring)
+   * @param index      Unique creature id / spawn counter
+   * @param x          Optional spawn X (random if omitted)
+   * @param y          Optional spawn Y (random if omitted)
+   */
+  constructor(charOrDNA: string | DNA, index: number, x?: number, y?: number) {
     this.id  = index;
-    this.dna = buildDNA(char, index);
+    this.dna = typeof charOrDNA === 'string' ? buildDNA(charOrDNA, index) : charOrDNA;
 
     const pad  = this.dna.size * 2 + 30;
     const maxY = H() - 140;
-    this.x       = pad + Math.random() * (W() - pad * 2);
-    this.y       = pad + Math.random() * (maxY - pad * 2);
+    this.x       = x ?? pad + Math.random() * Math.max(1, W() - pad * 2);
+    this.y       = y ?? pad + Math.random() * Math.max(1, maxY - pad * 2);
     this.heading = Math.random() * Math.PI * 2;
     this.targetH = this.heading;
     this.noiseT  = this.dna.noiseOff;
@@ -60,6 +72,16 @@ export class Creature {
     const nx = noise(this.x * this.dna.noiseScale + this.noiseT, this.y * this.dna.noiseScale);
     const ny = noise(this.x * this.dna.noiseScale, this.y * this.dna.noiseScale + this.noiseT + 100);
     this.targetH += ((nx - 0.5) * 0.42 + (ny - 0.5) * 0.2) * this.dna.turnRate * 6;
+
+    // Behavior steering force → blend into targetH
+    if (this.steerX !== 0 || this.steerY !== 0) {
+      const bh = Math.atan2(this.steerY, this.steerX);
+      let bd = bh - this.targetH;
+      bd = ((bd + Math.PI) % (Math.PI * 2)) - Math.PI;
+      this.targetH += bd * 0.14;   // stronger pull than noise alone
+      this.steerX = 0;
+      this.steerY = 0;
+    }
 
     // Smooth heading interpolation (shortest arc)
     let d = this.targetH - this.heading;
@@ -112,6 +134,18 @@ export class Creature {
       p.stroke(dna.hue, dna.sat, 90, 0.35);
       p.strokeWeight(1.2);
       p.ellipse(x, y, s * 3.5, s * 3.5);
+    }
+
+    // Low-energy warning ring — appears below 55%, pulses red below 25%
+    if (this.energy < 0.55 && !this.dying) {
+      const danger = 1 - this.energy / 0.55;           // 0 → 1 as energy drops
+      const pulse  = this.energy < 0.25
+        ? 0.35 + 0.65 * Math.abs(Math.sin(this.age * 0.12))
+        : 1.0;
+      p.noFill();
+      p.stroke(8, 82, 55, danger * 0.5 * pulse);       // dim orange-red
+      p.strokeWeight(1.5);
+      p.ellipse(x, y, s * 3.8, s * 3.8);
     }
   }
 

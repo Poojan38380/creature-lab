@@ -6,6 +6,8 @@ import { updateTrails, drawTrails } from './trails';
 import { hideHint, initHint, rebuildSequence, updateHUD, updateTooltip } from './ui';
 import { setNoise, setSize } from './context';
 import { DNA } from './dna';
+import { SpatialGrid } from './grid';
+import { applyBehaviors, SpawnRequest } from './behaviors';
 
 // ── State ────────────────────────────────────────────────────────
 
@@ -17,6 +19,7 @@ interface TypedEntry {
 
 const creatures: Creature[]   = [];
 const typed:     TypedEntry[] = [];
+const grid = new SpatialGrid(120);
 
 let spawnIdx     = 0;
 let totalSpawned = 0;
@@ -38,8 +41,14 @@ function handleBackspace(): void {
   if (typed.length === 0) return;
   const last = typed.pop()!;
   last.creature.kill();
-  totalDead++;
   rebuildSequence(typed);
+}
+
+/** Called by the behavior system when two creatures reproduce. */
+function spawnOffspring(req: SpawnRequest): void {
+  const c = new Creature(req.dna, spawnIdx++, req.x, req.y);
+  creatures.push(c);
+  totalSpawned++;
 }
 
 // ── Input: hidden <input> element ────────────────────────────────
@@ -134,6 +143,9 @@ new p5((sk: p5) => {
     sk.noStroke();
     sk.rect(0, 0, sk.width, sk.height);
 
+    // Ecosystem behaviours: steering forces, energy, reproduction
+    applyBehaviors(creatures, grid, spawnOffspring);
+
     updateTrails(creatures);
     drawTrails(sk);
 
@@ -141,7 +153,10 @@ new p5((sk: p5) => {
       const c = creatures[i];
       c.update();
       c.draw(sk);
-      if (!c.alive) creatures.splice(i, 1);
+      if (!c.alive) {
+        totalDead++;
+        creatures.splice(i, 1);
+      }
     }
 
     if (sk.frameCount % 15 === 0) {

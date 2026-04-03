@@ -1,6 +1,6 @@
 # Creature Lab — Implementation Status
 
-> Last updated: 2026-04-03
+> Last updated: 2026-04-04
 
 ---
 
@@ -9,7 +9,7 @@
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 1 — Foundation | ✅ Complete | Single creature spawn, DNA, locomotion, UI |
-| 2 — Ecosystem Behaviors | ⬜ Not started | Food chains, flocking, energy, reproduction |
+| 2 — Ecosystem Behaviors | ✅ Complete | Food chains, flocking, energy, reproduction |
 | 3 — Environmental Events | ⬜ Not started | Punctuation-triggered world events |
 | 4 — UI/UX Polish | ⬜ Not started | Themes, panels, design layer |
 | 5 — Sharing & Extras | ⬜ Not started | URL seeds, gallery, export, easter eggs |
@@ -86,19 +86,80 @@
 
 ---
 
-## Phase 2 — Ecosystem Behaviors ⬜
+## Phase 2 — Ecosystem Behaviors ✅
 
-**Status: Not started**
+**Completed: 2026-04-04**
 
-### Planned
+### What was built
 
-- Spatial grid for O(1) neighbor lookup
-- Perception radius per creature
-- 4 steering drives: separation, cohesion, alignment, hunt/flee
-- Family-based predator/prey hierarchy
-- Energy system (drain over time, restore on feeding)
-- Reproduction (two nearby same-species creatures → offspring)
-- Starvation death
+#### Spatial Grid (`src/grid.ts`)
+- `SpatialGrid` class — uniform hash grid, cell size 120 px
+- `rebuild(creatures)` clears and repopulates each frame from live creatures
+- `getNearby(x, y, radius)` scans all cells within radius, returns flat array
+- 32-bit key from two 15-bit cell coordinates (no collisions at any realistic screen size)
+- O(1) average neighbour lookup — eliminates O(n²) per-frame all-pairs checks
+
+#### Behavior Engine (`src/behaviors.ts`)
+- `applyBehaviors(creatures, grid, onSpawn)` runs once per draw frame
+- Steering results written to `c.steerX / c.steerY`; consumed and cleared by `Creature.update()`
+
+**4 steering drives (weighted sum):**
+
+| Drive | Families | Weight | Description |
+|-------|----------|--------|-------------|
+| Separation | All | 2.8 | Repel if inside personal space `(sizeA + sizeB) × 1.8` |
+| Cohesion | All except titan | 0.30 | Drift toward same-family cluster centre |
+| Alignment | Vowel, Consonant | 0.50 | Match heading of nearby flockmates |
+| Hunt | Apex → vowel/consonant; Consonant → scavenger | 1.3 | Chase prey; eat on contact |
+| Flee | Vowel/Consonant from apex; Scavenger from consonant | 2.6 | Panic-flee (inversely proportional to dist²) |
+
+**Titan exception**: titans only compute separation — no flocking, no predation, no fleeing.
+
+#### Predator / Prey Hierarchy
+```
+Apex  →  hunts Vowel, Consonant
+Consonant  →  hunts Scavenger
+Titan  →  immune (never hunted, never hunts)
+```
+- Eat range = `(predator.size + prey.size) × 2.0 × 0.5`
+- Successful kill: prey.kill() + predator.energy += 0.42
+
+#### Energy System
+- All creatures start at `energy = 1.0`
+- Drain: `−0.0001 / tick` (~167 s to starvation at 60 fps)
+- Drain only active when ≥ 5 creatures alive — small ecosystems don't die immediately
+- `energy = 0` → `c.kill()` (starvation, same death animation as manual delete)
+- Low-energy warning ring in renderer: dim orange ring below 55%, pulses red below 25%
+
+#### Reproduction
+- Same family, both creatures within 50 px, both `energy > 0.72`, both cooldown = 0
+- Lower-ID creature spawns offspring (prevents double-spawn from both parents)
+- Offspring DNA: `makeOffspringDNA(dnaA, dnaB, seed)` in `dna.ts`
+  - Blends hue, sat, lit, size, speed, noiseScale toward alt parent by `t = 0.3–0.7`
+  - ±12% mutation factor on each blended trait
+  - Inherits `char`, `family`, `bodyType`, appendage layout from random base parent
+- Both parents lose 0.28 energy; 350-frame reproduction cooldown (≈6 s) per parent
+- Hard cap: no offspring if `alive ≥ 80`
+- Offspring spawns at midpoint between parents, `spawnOffspring` in main.ts assigns proper id
+
+#### Death Counting
+- `totalDead` is now incremented exclusively in the draw loop when `!c.alive`
+- Covers all death sources: manual backspace, starvation, predation
+
+#### New `Creature` fields
+- `energy = 1.0` — ecosystem health value
+- `steerX = 0 / steerY = 0` — per-frame behavior force (set by behaviors, cleared in update)
+- `reproCD = 0` — reproduction cooldown counter
+- Constructor now accepts `string | DNA` (second path for offspring) + optional `x, y`
+
+#### File changes
+| File | Change |
+|------|--------|
+| `src/grid.ts` | New — spatial hash grid |
+| `src/behaviors.ts` | New — behavior engine |
+| `src/dna.ts` | Added `makeOffspringDNA()` |
+| `src/creature.ts` | New fields, constructor overload, steering in update(), energy ring in draw() |
+| `src/main.ts` | Grid + behaviors wired into draw loop; `spawnOffspring` callback |
 
 ---
 
@@ -163,6 +224,8 @@ creature-lab/
     ├── trails.ts     ← updateTrails(), drawTrails()
     ├── ui.ts         ← DOM: terminal, HUD, tooltip
     ├── context.ts    ← shared noise fn + W/H helpers (live ES module bindings)
+    ├── grid.ts       ← SpatialGrid — O(1) neighbour lookup (Phase 2)
+    ├── behaviors.ts  ← ecosystem behavior engine: steering, energy, reproduction (Phase 2)
     └── style.css     ← all styles (extracted from old monolithic index.html)
 ```
 
