@@ -144,19 +144,39 @@
 
 ---
 
-## Files
+## Project Structure
 
 ```
 creature-lab/
-├── index.html                 ← main artifact (Phase 1 complete)
+├── index.html                 ← minimal Vite entry point (HTML shell only)
+├── package.json               ← p5, @types/p5, vite, typescript
+├── vite.config.ts
+├── tsconfig.json              ← strict ES2020, bundler moduleResolution
 ├── PLAN.md                    ← full project plan
-└── IMPLEMENTATION_STATUS.md  ← this file
+├── IMPLEMENTATION_STATUS.md  ← this file
+└── src/
+    ├── main.ts       ← p5 sketch + keyboard/mouse input + game loop
+    ├── creature.ts   ← Creature class (update, draw, kill)
+    ├── dna.ts        ← DNA interface, FAMILIES, buildDNA(), getFamily()
+    ├── rng.ts        ← makeRNG() — xorshift32 seeded PRNG
+    ├── particles.ts  ← Particle class (death debris)
+    ├── trails.ts     ← updateTrails(), drawTrails()
+    ├── ui.ts         ← DOM: terminal, HUD, tooltip
+    ├── context.ts    ← shared noise fn + W/H helpers (live ES module bindings)
+    └── style.css     ← all styles (extracted from old monolithic index.html)
+```
+
+### Dev workflow
+```bash
+npm install
+npm run dev     # Vite dev server with HMR
+npm run build   # bundles to dist/ (single distributable)
 ```
 
 ---
 
 ## Known Issues / Notes
 
-- None currently. Phase 1 is clean and stable.
-- `_noise` is initialized to `() => 0.5` as a placeholder until p5 setup runs; no creatures update before `p.draw()` is called so this is safe.
-- Creature family for capitals excludes `Q`, `X`, `Z` which are apex — handled by `getFamily()` order (apex checked before titan).
+- `noise` in `context.ts` is initialized to `() => 0.5` — safe because creatures only call it inside `update()` which runs inside `sk.draw()`, after `setNoise()` has been called in `sk.setup()`.
+- `getFamily()` checks `apex` before `titan` — intentional, so Q/X/Z are not absorbed by the capital-letter titan check.
+- Refactored from single `index.html` to Vite + TypeScript on 2026-04-03. The old monolithic file is superseded.
