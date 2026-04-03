@@ -130,6 +130,80 @@ canvas {
   50%       { opacity: 0; }
 }
 
+/* ── Quick guide (shown when canvas is empty) ── */
+#quick-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -58%);
+  pointer-events: none;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.7s ease;
+  z-index: 5;
+}
+#quick-guide.hidden { opacity: 0; }
+.qg-title {
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  color: rgba(70, 200, 150, 0.70);
+  margin-bottom: 4px;
+}
+.qg-sub {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: rgba(70, 200, 150, 0.28);
+  margin-bottom: 22px;
+}
+.qg-block { margin-bottom: 16px; }
+.qg-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  margin-bottom: 7px;
+}
+.qg-key {
+  color: rgba(70, 200, 150, 0.65);
+  white-space: nowrap;
+}
+.qg-val { color: rgba(160, 230, 200, 0.45); }
+.qg-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(70, 190, 150, 0.10);
+  margin: 14px 0;
+}
+.qg-label {
+  font-size: 9px;
+  letter-spacing: 0.30em;
+  color: rgba(70, 200, 150, 0.30);
+  margin-bottom: 12px;
+}
+.qg-events {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+.qg-ev {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: rgba(160, 230, 200, 0.40);
+}
+.qg-k {
+  display: inline-block;
+  min-width: 26px;
+  text-align: center;
+  color: rgba(70, 200, 150, 0.60);
+  border: 1px solid rgba(70, 200, 150, 0.18);
+  padding: 1px 5px;
+  font-size: 11px;
+}
+
 /* ── Pause overlay ── */
 #pause-overlay {
   position: absolute;

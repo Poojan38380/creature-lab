@@ -333,6 +333,42 @@
     .c-titan     { color: hsl(285, 75%, 65%); text-shadow: 0 0 10px hsl(285, 75%, 65%); }
     .c-cons      { color: hsl(215, 85%, 62%); text-shadow: 0 0 10px hsl(215, 85%, 62%); }
 
+    /* ── Event table ── */
+    .event-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .event-table th {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--fg-dim);
+      text-align: left;
+      padding: 0 12px 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .event-table td {
+      padding: 11px 12px 11px 0;
+      border-bottom: 1px solid var(--fg-faint);
+      vertical-align: top;
+      line-height: 1.65;
+    }
+    .event-table td:first-child {
+      width: 60px;
+      white-space: nowrap;
+    }
+    .event-table td:nth-child(2) {
+      width: 160px;
+      color: var(--accent-bright);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .event-table td:nth-child(3) { color: var(--fg-dim); }
+    .event-table code {
+      font-family: inherit;
+      color: var(--accent);
+    }
+
     /* ── CTA footer ── */
     .cta {
       text-align: center;
@@ -411,6 +447,77 @@
       On mobile, tap anywhere on the screen to bring up the keyboard.
       The canvas automatically resizes so your creatures stay visible.
     </p>
+  </section>
+
+  <!-- ── PUNCTUATION EVENTS ───────────────────────────────────── -->
+  <section>
+    <h2>// PUNCTUATION EVENTS</h2>
+    <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
+      Non-letter keys don't spawn creatures — they trigger environmental events
+      that reshape the entire ecosystem. These work on both desktop and mobile.
+    </p>
+
+    <table class="event-table">
+      <thead>
+        <tr>
+          <th>KEY</th>
+          <th>EVENT</th>
+          <th>WHAT HAPPENS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="key">.</span></td>
+          <td>Day / Night Toggle</td>
+          <td>Canvas atmosphere shifts from void-black to deep indigo. Press again to return to day. The transition is gradual — the background slowly bleeds colour.</td>
+        </tr>
+        <tr>
+          <td><span class="key">!</span></td>
+          <td>Earthquake</td>
+          <td>Screen shakes. A shockwave ring erupts from the canvas centre. Every creature is thrown to a random heading and scatters.</td>
+        </tr>
+        <tr>
+          <td><span class="key">?</span></td>
+          <td>Confusion Field</td>
+          <td>5-second chaos. All steering inverts — prey walks toward predators, flockmates flee each other. Purple tint fills the canvas.</td>
+        </tr>
+        <tr>
+          <td><span class="key">,</span></td>
+          <td>Rain</td>
+          <td>8 seconds of diagonal rain. Vowels (aquatic by nature) gain +18% speed. All other families slow by 32%.</td>
+        </tr>
+        <tr>
+          <td><span class="key">;</span></td>
+          <td>Spore Cloud</td>
+          <td>All creature colours shift by a random ±30–80 hue degrees and slowly drift back. Use it to watch your ecosystem change skin.</td>
+        </tr>
+        <tr>
+          <td><span class="key">:</span></td>
+          <td>Freeze Frame</td>
+          <td>Slow-motion at 20% speed for ~6 seconds, then gradually restores. Death animations, locomotion, and noise steering all slow together.</td>
+        </tr>
+        <tr>
+          <td><span class="key">(</span></td>
+          <td>Gravity Well</td>
+          <td>A 4-second attractor field appears at the canvas centre. All creatures are pulled inward regardless of other steering forces.</td>
+        </tr>
+        <tr>
+          <td><span class="key">)</span></td>
+          <td>Repulsor</td>
+          <td>Same as <code>(</code> but inverted — creatures scatter outward from the centre in all directions.</td>
+        </tr>
+        <tr>
+          <td><span class="key">ENTER</span></td>
+          <td>Genesis</td>
+          <td>Full-canvas light flash. All creatures receive +35% energy and all reproduction cooldowns reset — triggering a mass birth event the next frame.</td>
+        </tr>
+        <tr>
+          <td><span class="key">SPACE</span></td>
+          <td>Pause / Resume</td>
+          <td>Freezes time. Creatures hold their positions. All simulation, energy drain, and behaviours halt until you press Space again.</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
   <!-- ── FAMILIES ──────────────────────────────────────────────── -->

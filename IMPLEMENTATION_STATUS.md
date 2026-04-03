@@ -1,6 +1,6 @@
 # Creature Lab — Implementation Status
 
-> Last updated: 2026-04-04 (Phase 3)
+> Last updated: 2026-04-04 (Phase 3 + fixes)
 
 ---
 
@@ -277,6 +277,23 @@ npm run build   # bundles to dist/ (single distributable)
 ```
 
 ---
+
+## Post-Phase-3 Fixes & Additions (2026-04-04)
+
+### Gravity well / Repulsor fix
+**Root cause**: gravity force was folded into `huntX/huntY` in `behaviors.ts` and then normalised to a unit vector — magnitude discarded, overwhelmed by separation forces.
+**Fix**: removed from `behaviors.ts` entirely. Now applied in `creature.ts update()` as a direct `targetH` manipulation (same pattern as confusion), bypassing the normalisation step. Strength: `1.2 / (1 + dist / 120)` — strong at close range, visible from any distance.
+
+### In-game quick guide (`#quick-guide`)
+- Centred DOM overlay visible when `living === 0` (checked every 15 frames + on first spawn)
+- Shows: spawn/backspace/hover controls + all 10 punctuation event keys in a 2-column grid
+- CSS `transition: opacity 0.7s` gives smooth fade when first creature spawns or last one dies
+- Hides immediately on `spawnChar()` call; reappears after all creatures die/starve
+
+### Field guide updated (`guide.html`)
+- New `// PUNCTUATION EVENTS` section between HOW TO PLAY and THE FIVE FAMILIES
+- Full table of all 10 events with key, event name, and detailed description
+- Styled with `.event-table` CSS consistent with rest of guide
 
 ## Known Issues / Notes
 

@@ -30,8 +30,14 @@ let hintVisible  = true;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
+const quickGuideEl = document.getElementById('quick-guide');
+function setQuickGuide(visible: boolean): void {
+  quickGuideEl?.classList.toggle('hidden', !visible);
+}
+
 function spawnChar(char: string): void {
   if (hintVisible) { hideHint(); hintVisible = false; }
+  setQuickGuide(false);
   const c = new Creature(char, spawnIdx++);
   creatures.push(c);
   totalSpawned++;
@@ -187,11 +193,9 @@ new p5((sk: p5) => {
     drawEnvEffects(sk);
 
     if (sk.frameCount % 15 === 0) {
-      updateHUD(
-        creatures.filter(c => !c.dying).length,
-        totalSpawned,
-        totalDead,
-      );
+      const living = creatures.filter(c => !c.dying).length;
+      updateHUD(living, totalSpawned, totalDead);
+      setQuickGuide(living === 0);
     }
   };
 

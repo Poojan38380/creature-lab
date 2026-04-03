@@ -95,6 +95,20 @@ export class Creature {
     d = ((d + Math.PI) % (Math.PI * 2)) - Math.PI;
     this.heading += d * 0.07;
 
+    // Gravity well / repulsor — applied directly to targetH so it cannot
+    // be normalised away by other steering forces
+    if (env.gravField) {
+      const { x: gx, y: gy, attract } = env.gravField;
+      const gdx = gx - this.x;
+      const gdy = gy - this.y;
+      const gd  = Math.sqrt(gdx * gdx + gdy * gdy) + 1;
+      const dir = attract ? 1 : -1;
+      const gh  = Math.atan2(dir * gdy, dir * gdx); // angle toward / away from field
+      let gbd   = gh - this.targetH;
+      gbd = ((gbd + Math.PI) % (Math.PI * 2)) - Math.PI;
+      this.targetH += gbd * (1.2 / (1 + gd / 120)); // strong falloff by distance
+    }
+
     // Speed — scaled by slow-mo and rain
     let speedMul = env.slowMo;
     if (env.rain) speedMul *= this.dna.family === 'vowel' ? 1.18 : 0.68;
