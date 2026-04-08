@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Field Guide — Typographic Creature Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/cil--animal.svg" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg:           #04040a;
-      --fg:           rgba(160, 230, 200, 0.90);
-      --fg-dim:       rgba(160, 230, 200, 0.62);
-      --fg-faint:     rgba(160, 230, 200, 0.40);
-      --accent:       rgba(70, 200, 150, 0.75);
-      --accent-bright:rgba(70, 200, 150, 0.95);
-      --border:       rgba(70, 190, 150, 0.14);
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #04040a;
+      --fg: rgba(160, 230, 200, 0.90);
+      --fg-dim: rgba(160, 230, 200, 0.62);
+      --fg-faint: rgba(160, 230, 200, 0.40);
+      --accent: rgba(70, 200, 150, 0.75);
+      --accent-bright: rgba(70, 200, 150, 0.95);
+      --border: rgba(70, 190, 150, 0.14);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);
@@ -41,6 +51,7 @@
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(8px);
     }
+
     .nav-back {
       color: var(--accent);
       text-decoration: none;
@@ -48,7 +59,11 @@
       letter-spacing: 0.15em;
       transition: color 0.2s;
     }
-    .nav-back:hover { color: var(--accent-bright); }
+
+    .nav-back:hover {
+      color: var(--accent-bright);
+    }
+
     .nav-title {
       font-size: 10px;
       letter-spacing: 0.22em;
@@ -62,7 +77,9 @@
       padding: 60px 32px 100px;
     }
 
-    section { margin-bottom: 72px; }
+    section {
+      margin-bottom: 72px;
+    }
 
     .section-label {
       font-size: 9px;
@@ -95,9 +112,14 @@
       margin-bottom: 8px;
     }
 
-    p { color: var(--fg); margin-bottom: 14px; }
+    p {
+      color: var(--fg);
+      margin-bottom: 14px;
+    }
 
-    .muted { color: var(--fg-dim); }
+    .muted {
+      color: var(--fg-dim);
+    }
 
     /* ── Hero ── */
     .hero-sub {
@@ -121,6 +143,7 @@
       gap: 6px 24px;
       align-items: baseline;
     }
+
     .key {
       display: inline-block;
       padding: 2px 10px;
@@ -133,6 +156,7 @@
       white-space: nowrap;
       text-align: center;
     }
+
     .ctrl-desc {
       font-size: 12px;
       color: var(--fg);
@@ -148,19 +172,22 @@
     .family-card {
       padding: 22px 20px 18px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.016);
+      background: rgba(255, 255, 255, 0.016);
       position: relative;
       overflow: hidden;
     }
+
     .family-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 3px;
       height: 100%;
       background: var(--family-color);
       opacity: 0.75;
     }
+
     .family-card::after {
       content: var(--specimen-char);
       position: absolute;
@@ -181,27 +208,32 @@
       margin-bottom: 6px;
       text-shadow: 0 0 14px var(--family-color);
     }
+
     .family-trigger {
       font-size: 11px;
       color: var(--fg-dim);
       margin-bottom: 10px;
     }
+
     .family-trigger code {
       color: var(--family-color);
       opacity: 0.85;
       letter-spacing: 0.04em;
     }
+
     .family-desc {
       font-size: 12px;
       color: var(--fg);
       line-height: 1.7;
     }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 12px;
     }
+
     .tag {
       font-size: 9px;
       letter-spacing: 0.16em;
@@ -217,12 +249,14 @@
       flex-direction: column;
       gap: 10px;
     }
+
     .chain-row {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 12px;
     }
+
     .chain-predator {
       min-width: 100px;
       padding: 5px 12px;
@@ -230,19 +264,23 @@
       text-align: center;
       letter-spacing: 0.12em;
     }
+
     .chain-arrow {
       color: var(--fg-dim);
       letter-spacing: -2px;
     }
+
     .chain-prey {
       display: flex;
       gap: 8px;
     }
+
     .chain-prey span {
       padding: 5px 12px;
       border: 1px solid var(--border);
       letter-spacing: 0.12em;
     }
+
     .chain-note {
       font-size: 10px;
       color: var(--fg-dim);
@@ -250,6 +288,7 @@
       padding: 5px 12px;
       font-style: italic;
     }
+
     .immune-badge {
       font-size: 9px;
       letter-spacing: 0.20em;
@@ -266,34 +305,61 @@
       align-items: center;
       margin: 20px 0;
     }
+
     .energy-label {
       font-size: 10px;
       letter-spacing: 0.12em;
       color: var(--fg-dim);
       text-align: right;
     }
+
     .energy-bar-track {
       height: 4px;
-      background: rgba(255,255,255,0.06);
+      background: rgba(255, 255, 255, 0.06);
       position: relative;
       border-radius: 2px;
     }
+
     .energy-bar-fill {
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       height: 100%;
       border-radius: 2px;
     }
-    .energy-bar-fill.full  { width: 100%; background: linear-gradient(90deg, #46c896, #00e5c3); box-shadow: 0 0 8px #00e5c3; }
-    .energy-bar-fill.mid   { width: 55%;  background: linear-gradient(90deg, #c89646, #e5a000); }
-    .energy-bar-fill.low   { width: 22%;  background: linear-gradient(90deg, #c84646, #e50000); }
+
+    .energy-bar-fill.full {
+      width: 100%;
+      background: linear-gradient(90deg, #46c896, #00e5c3);
+      box-shadow: 0 0 8px #00e5c3;
+    }
+
+    .energy-bar-fill.mid {
+      width: 55%;
+      background: linear-gradient(90deg, #c89646, #e5a000);
+    }
+
+    .energy-bar-fill.low {
+      width: 22%;
+      background: linear-gradient(90deg, #c84646, #e50000);
+    }
+
     .energy-status {
       font-size: 10px;
       letter-spacing: 0.10em;
     }
-    .energy-status.full { color: rgba(0, 229, 195, 0.70); }
-    .energy-status.mid  { color: rgba(229, 160, 0,   0.70); }
-    .energy-status.low  { color: rgba(229, 0,   0,   0.70); }
+
+    .energy-status.full {
+      color: rgba(0, 229, 195, 0.70);
+    }
+
+    .energy-status.mid {
+      color: rgba(229, 160, 0, 0.70);
+    }
+
+    .energy-status.low {
+      color: rgba(229, 0, 0, 0.70);
+    }
 
     /* ── Specimen experiments ── */
     .experiments {
@@ -301,11 +367,13 @@
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 14px;
     }
+
     .experiment {
       padding: 18px 18px 14px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.012);
+      background: rgba(255, 255, 255, 0.012);
     }
+
     .exp-type {
       font-size: 18px;
       letter-spacing: 0.18em;
@@ -314,12 +382,14 @@
       gap: 4px;
       flex-wrap: wrap;
     }
+
     .exp-title {
       font-size: 9px;
       letter-spacing: 0.28em;
       color: var(--fg-dim);
       margin-bottom: 6px;
     }
+
     .exp-desc {
       font-size: 12px;
       color: var(--fg-dim);
@@ -327,11 +397,30 @@
     }
 
     /* character color spans */
-    .c-vowel     { color: hsl(170, 90%, 55%); text-shadow: 0 0 10px hsl(170, 90%, 55%); }
-    .c-apex      { color: hsl(32,  90%, 58%); text-shadow: 0 0 10px hsl(32,  90%, 58%); }
-    .c-scav      { color: hsl(85,  75%, 50%); text-shadow: 0 0 10px hsl(85,  75%, 50%); }
-    .c-titan     { color: hsl(285, 75%, 65%); text-shadow: 0 0 10px hsl(285, 75%, 65%); }
-    .c-cons      { color: hsl(215, 85%, 62%); text-shadow: 0 0 10px hsl(215, 85%, 62%); }
+    .c-vowel {
+      color: hsl(170, 90%, 55%);
+      text-shadow: 0 0 10px hsl(170, 90%, 55%);
+    }
+
+    .c-apex {
+      color: hsl(32, 90%, 58%);
+      text-shadow: 0 0 10px hsl(32, 90%, 58%);
+    }
+
+    .c-scav {
+      color: hsl(85, 75%, 50%);
+      text-shadow: 0 0 10px hsl(85, 75%, 50%);
+    }
+
+    .c-titan {
+      color: hsl(285, 75%, 65%);
+      text-shadow: 0 0 10px hsl(285, 75%, 65%);
+    }
+
+    .c-cons {
+      color: hsl(215, 85%, 62%);
+      text-shadow: 0 0 10px hsl(215, 85%, 62%);
+    }
 
     /* ── Event table ── */
     .event-table {
@@ -339,6 +428,7 @@
       border-collapse: collapse;
       font-size: 12px;
     }
+
     .event-table th {
       font-size: 9px;
       letter-spacing: 0.28em;
@@ -347,23 +437,30 @@
       padding: 0 12px 10px 0;
       border-bottom: 1px solid var(--border);
     }
+
     .event-table td {
       padding: 11px 12px 11px 0;
       border-bottom: 1px solid var(--fg-faint);
       vertical-align: top;
       line-height: 1.65;
     }
+
     .event-table td:first-child {
       width: 60px;
       white-space: nowrap;
     }
+
     .event-table td:nth-child(2) {
       width: 160px;
       color: var(--accent-bright);
       letter-spacing: 0.08em;
       white-space: nowrap;
     }
-    .event-table td:nth-child(3) { color: var(--fg-dim); }
+
+    .event-table td:nth-child(3) {
+      color: var(--fg-dim);
+    }
+
     .event-table code {
       font-family: inherit;
       color: var(--accent);
@@ -374,6 +471,7 @@
       text-align: center;
       padding: 40px 0 0;
     }
+
     .cta-link {
       display: inline-block;
       padding: 14px 40px;
@@ -384,10 +482,12 @@
       letter-spacing: 0.28em;
       transition: background 0.2s, border-color 0.2s;
     }
+
     .cta-link:hover {
       background: rgba(70, 200, 150, 0.07);
       border-color: rgba(70, 200, 150, 0.65);
     }
+
     .cta-sub {
       margin-top: 14px;
       font-size: 10px;
@@ -396,403 +496,448 @@
     }
 
     /* ── Scrollbar ── */
-    ::-webkit-scrollbar       { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(70, 190, 150, 0.18); }
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(70, 190, 150, 0.18);
+    }
 
     @media (max-width: 540px) {
-      main { padding: 40px 20px 80px; }
-      nav  { padding: 12px 20px; }
-      .energy-demo { grid-template-columns: 60px 1fr 70px; gap: 10px; }
+      main {
+        padding: 40px 20px 80px;
+      }
+
+      nav {
+        padding: 12px 20px;
+      }
+
+      .energy-demo {
+        grid-template-columns: 60px 1fr 70px;
+        gap: 10px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <a class="nav-back" href="/">← BACK TO LAB</a>
-  <span class="nav-title">FIELD GUIDE // TYPOGRAPHIC CREATURE LAB</span>
-</nav>
+  <nav>
+    <a class="nav-back" href="/">← BACK TO LAB</a>
+    <span class="nav-title">FIELD GUIDE // TYPOGRAPHIC CREATURE LAB</span>
+  </nav>
 
-<main>
+  <main>
 
-  <!-- ── HERO ─────────────────────────────────────────────────── -->
-  <section>
-    <div class="section-label">INTRODUCTION</div>
-    <h1>EVERY KEYSTROKE<br>SPAWNS A LIFE FORM.</h1>
-    <p class="hero-sub">
-      You are the creator. The characters you type become living organisms —
-      each one genetically encoded by its letter, each one fighting to survive
-      in the ecosystem you build. This guide tells you how to read their world.
-    </p>
-  </section>
+    <!-- ── HERO ─────────────────────────────────────────────────── -->
+    <section>
+      <div class="section-label">INTRODUCTION</div>
+      <h1>EVERY KEYSTROKE<br>SPAWNS A LIFE FORM.</h1>
+      <p class="hero-sub">
+        You are the creator. The characters you type become living organisms —
+        each one genetically encoded by its letter, each one fighting to survive
+        in the ecosystem you build. This guide tells you how to read their world.
+      </p>
+    </section>
 
-  <hr class="divider" />
+    <hr class="divider" />
 
-  <!-- ── CONTROLS ──────────────────────────────────────────────── -->
-  <section>
-    <h2>// HOW TO PLAY</h2>
-    <div class="controls">
-      <span class="key">any letter / number</span>
-      <span class="ctrl-desc">Spawns one creature. Its DNA is determined by the character and its position in your sequence.</span>
+    <!-- ── CONTROLS ──────────────────────────────────────────────── -->
+    <section>
+      <h2>// HOW TO PLAY</h2>
+      <div class="controls">
+        <span class="key">any letter / number</span>
+        <span class="ctrl-desc">Spawns one creature. Its DNA is determined by the character and its position in your
+          sequence.</span>
 
-      <span class="key">BACKSPACE</span>
-      <span class="ctrl-desc">Kills the most recently spawned creature with a dissolution animation.</span>
+        <span class="key">BACKSPACE</span>
+        <span class="ctrl-desc">Kills the most recently spawned creature with a dissolution animation.</span>
 
-      <span class="key">hover cursor</span>
-      <span class="ctrl-desc">Identifies the nearest creature — shows species, family, age, speed, and eye count.</span>
+        <span class="key">hover cursor</span>
+        <span class="ctrl-desc">Identifies the nearest creature — shows species, family, age, speed, and eye
+          count.</span>
+      </div>
+
+      <p style="margin-top: 22px; color: var(--fg-dim); font-size: 12px;">
+        On mobile, tap anywhere on the screen to bring up the keyboard.
+        The canvas automatically resizes so your creatures stay visible.
+      </p>
+    </section>
+
+    <!-- ── PUNCTUATION EVENTS ───────────────────────────────────── -->
+    <section>
+      <h2>// PUNCTUATION EVENTS</h2>
+      <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
+        Non-letter keys don't spawn creatures — they trigger environmental events
+        that reshape the entire ecosystem. These work on both desktop and mobile.
+      </p>
+
+      <table class="event-table">
+        <thead>
+          <tr>
+            <th>KEY</th>
+            <th>EVENT</th>
+            <th>WHAT HAPPENS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="key">.</span></td>
+            <td>Day / Night Toggle</td>
+            <td>Canvas atmosphere shifts from void-black to deep indigo. Press again to return to day. The transition is
+              gradual — the background slowly bleeds colour.</td>
+          </tr>
+          <tr>
+            <td><span class="key">!</span></td>
+            <td>Earthquake</td>
+            <td>Screen shakes. A shockwave ring erupts from the canvas centre. Every creature is thrown to a random
+              heading and scatters.</td>
+          </tr>
+          <tr>
+            <td><span class="key">?</span></td>
+            <td>Confusion Field</td>
+            <td>5-second chaos. All steering inverts — prey walks toward predators, flockmates flee each other. Purple
+              tint fills the canvas.</td>
+          </tr>
+          <tr>
+            <td><span class="key">,</span></td>
+            <td>Rain</td>
+            <td>8 seconds of diagonal rain. Vowels (aquatic by nature) gain +18% speed. All other families slow by 32%.
+            </td>
+          </tr>
+          <tr>
+            <td><span class="key">;</span></td>
+            <td>Spore Cloud</td>
+            <td>All creature colours shift by a random ±30–80 hue degrees and slowly drift back. Use it to watch your
+              ecosystem change skin.</td>
+          </tr>
+          <tr>
+            <td><span class="key">:</span></td>
+            <td>Freeze Frame</td>
+            <td>Slow-motion at 20% speed for ~6 seconds, then gradually restores. Death animations, locomotion, and
+              noise steering all slow together.</td>
+          </tr>
+          <tr>
+            <td><span class="key">(</span></td>
+            <td>Gravity Well</td>
+            <td>A 4-second attractor field appears at the canvas centre. All creatures are pulled inward regardless of
+              other steering forces.</td>
+          </tr>
+          <tr>
+            <td><span class="key">)</span></td>
+            <td>Repulsor</td>
+            <td>Same as <code>(</code> but inverted — creatures scatter outward from the centre in all directions.</td>
+          </tr>
+          <tr>
+            <td><span class="key">ENTER</span></td>
+            <td>Genesis</td>
+            <td>Full-canvas light flash. All creatures receive +35% energy and all reproduction cooldowns reset —
+              triggering a mass birth event the next frame.</td>
+          </tr>
+          <tr>
+            <td><span class="key">SPACE</span></td>
+            <td>Pause / Resume</td>
+            <td>Freezes time. Creatures hold their positions. All simulation, energy drain, and behaviours halt until
+              you press Space again.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── FAMILIES ──────────────────────────────────────────────── -->
+    <section>
+      <h2>// THE FIVE FAMILIES</h2>
+      <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
+        Every printable character belongs to exactly one family.
+        The family shapes the creature's size, speed, temperament, and role in the food chain.
+      </p>
+
+      <div class="families">
+
+        <div class="family-card" style="--family-color: hsl(170, 90%, 55%); --specimen-char: 'e';">
+          <div class="family-name">HERD ANIMAL</div>
+          <div class="family-trigger">Triggered by: <code>a e i o u &nbsp;A E I O U</code></div>
+          <div class="family-desc">
+            Small, fast, and social. Vowels are drawn toward each other,
+            forming schools that pulse and turn in unison. In the presence
+            of a predator, the herd explodes into a frantic scatter.
+          </div>
+          <div class="tags">
+            <span class="tag">SMALL</span>
+            <span class="tag">FAST</span>
+            <span class="tag">FLOCKING</span>
+            <span class="tag">PREY</span>
+          </div>
+        </div>
+
+        <div class="family-card" style="--family-color: hsl(215, 85%, 62%); --specimen-char: 't';">
+          <div class="family-name">WANDERER</div>
+          <div class="family-trigger">Triggered by: <code>b c d f g h j k l m n p r s t v w y</code><br>
+            <span style="opacity:0.6">(lowercase consonants)</span>
+          </div>
+          <div class="family-desc">
+            Medium-sized and territorial. Wanderers loosely flock with their
+            own kind and hunt scavengers for sustenance. They are safe from
+            each other — but apex predators see them as prey.
+          </div>
+          <div class="tags">
+            <span class="tag">MEDIUM</span>
+            <span class="tag">TERRITORIAL</span>
+            <span class="tag">HUNTS SCAVENGERS</span>
+          </div>
+        </div>
+
+        <div class="family-card" style="--family-color: hsl(32, 90%, 58%); --specimen-char: 'z';">
+          <div class="family-name">APEX PREDATOR</div>
+          <div class="family-trigger">Triggered by: <code>q x z &nbsp;Q X Z</code></div>
+          <div class="family-desc">
+            Larger, faster, and relentless. Apex predators hunt both vowels
+            and consonants on sight. They are solitary by nature — two apex
+            creatures will avoid each other rather than fight.
+          </div>
+          <div class="tags">
+            <span class="tag">LARGE</span>
+            <span class="tag">FASTEST</span>
+            <span class="tag">TOP PREDATOR</span>
+            <span class="tag">SOLITARY</span>
+          </div>
+        </div>
+
+        <div class="family-card" style="--family-color: hsl(85, 75%, 50%); --specimen-char: '7';">
+          <div class="family-name">SCAVENGER</div>
+          <div class="family-trigger">Triggered by: <code>0 1 2 3 4 5 6 7 8 9</code></div>
+          <div class="family-desc">
+            Tiny, slow, and dim. Scavengers drift through the ecosystem in
+            loose clusters. They seem harmless — but every wanderer sees
+            them as food. Their survival strategy is purely numerical.
+          </div>
+          <div class="tags">
+            <span class="tag">TINY</span>
+            <span class="tag">SLOW</span>
+            <span class="tag">WEAK GLOW</span>
+            <span class="tag">SWARM</span>
+          </div>
+        </div>
+
+        <div class="family-card" style="--family-color: hsl(285, 75%, 65%); --specimen-char: 'B';">
+          <div class="family-name">TITAN</div>
+          <div class="family-trigger">Triggered by: <code>B C D F G H J K L M N P R S T V W Y</code><br>
+            <span style="opacity:0.6">(uppercase consonants)</span>
+          </div>
+          <div class="family-desc">
+            Massive, slow, and completely immune to predation. Titans lumber
+            across the canvas doing as they please. Nothing hunts them —
+            they simply are, ancient and indifferent.
+          </div>
+          <div class="tags">
+            <span class="tag">MASSIVE</span>
+            <span class="tag">SLOWEST</span>
+            <span class="tag">IMMUNE</span>
+            <span class="tag">ANCIENT</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOD CHAIN ─────────────────────────────────────────────── -->
+    <section>
+      <h2>// THE FOOD CHAIN</h2>
+      <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
+        Predators actively chase prey within their perception radius (~120 px).
+        Prey flee in inverse proportion to distance — the closer the predator, the more frantic the escape.
+      </p>
+
+      <div class="food-chain">
+        <div class="chain-row">
+          <span class="chain-predator c-apex">APEX</span>
+          <span class="chain-arrow">──────→</span>
+          <div class="chain-prey">
+            <span class="c-vowel">VOWELS</span>
+            <span class="c-cons">CONSONANTS</span>
+          </div>
+        </div>
+        <div class="chain-row">
+          <span class="chain-predator c-cons">CONSONANT</span>
+          <span class="chain-arrow">──────→</span>
+          <div class="chain-prey">
+            <span class="c-scav">SCAVENGERS</span>
+          </div>
+        </div>
+        <div class="chain-row">
+          <span class="chain-predator c-titan">TITAN</span>
+          <span class="chain-arrow" style="opacity:0.3">──────</span>
+          <span class="chain-note immune-badge">IMMUNE — hunts nothing, hunted by nothing</span>
+        </div>
+      </div>
+
+      <p style="margin-top: 22px; font-size: 12px; color: var(--fg-dim);">
+        A predator that catches prey gains <strong style="color: var(--fg);">+0.42 energy</strong>.
+        The prey dissolves in a burst of particles. Its energy feeds the hunter.
+      </p>
+    </section>
+
+    <!-- ── ENERGY ─────────────────────────────────────────────────── -->
+    <section>
+      <h2>// ENERGY &amp; SURVIVAL</h2>
+      <p style="font-size:12px; margin-bottom: 20px;">
+        Every creature has an energy reserve. It drains continuously at a slow rate.
+        When energy hits zero, the creature starves — same death animation as a manual delete.
+        Energy drain only activates when <strong>5 or more</strong> creatures are alive,
+        so small experiments never die on their own.
+      </p>
+
+      <div class="energy-demo">
+        <span class="energy-label">WELL FED</span>
+        <div class="energy-bar-track">
+          <div class="energy-bar-fill full"></div>
+        </div>
+        <span class="energy-status full">NO RING</span>
+      </div>
+      <div class="energy-demo">
+        <span class="energy-label">HUNGRY</span>
+        <div class="energy-bar-track">
+          <div class="energy-bar-fill mid"></div>
+        </div>
+        <span class="energy-status mid">ORANGE RING</span>
+      </div>
+      <div class="energy-demo">
+        <span class="energy-label">CRITICAL</span>
+        <div class="energy-bar-track">
+          <div class="energy-bar-fill low"></div>
+        </div>
+        <span class="energy-status low">PULSING RED</span>
+      </div>
+
+      <p style="margin-top: 22px; font-size: 12px; color: var(--fg-dim);">
+        The ring that appears around a creature below 55% energy is your early warning system.
+        A pulsing red ring means the creature will die within seconds unless it finds food.
+        An apex predator kept well-fed can outlast many prey populations.
+      </p>
+    </section>
+
+    <!-- ── REPRODUCTION ──────────────────────────────────────────── -->
+    <section>
+      <h2>// REPRODUCTION</h2>
+      <p style="font-size:12px; margin-bottom: 14px;">
+        The ecosystem can grow beyond what you type. When two creatures of the
+        <strong>same family</strong> stay within 50 px of each other and both have
+        <strong>energy above 72%</strong>, they reproduce.
+      </p>
+      <p style="font-size:12px; margin-bottom: 14px;">
+        The offspring inherits a blend of both parents' DNA — color, size, speed,
+        and body shape are mixed, then nudged by up to ±12% mutation.
+        Both parents spend 0.28 energy and enter a 6-second cooldown.
+      </p>
+      <p style="font-size:12px; color: var(--fg-dim);">
+        Population is capped at 80 living creatures. If you type a long sentence and
+        leave it running, the ecosystem will self-regulate — predators thin the herds,
+        survivors reproduce, and a dynamic equilibrium emerges.
+      </p>
+    </section>
+
+    <!-- ── EXPERIMENTS ───────────────────────────────────────────── -->
+    <section>
+      <h2>// SPECIMENS TO TRY</h2>
+      <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
+        Copy any sequence below into the lab and observe what unfolds.
+      </p>
+
+      <div class="experiments">
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 01 — THE HERD</div>
+          <div class="exp-type">
+            <span class="c-vowel">a</span><span class="c-vowel">e</span><span class="c-vowel">i</span><span
+              class="c-vowel">o</span><span class="c-vowel">u</span><span class="c-vowel">a</span><span
+              class="c-vowel">e</span>
+          </div>
+          <div class="exp-desc">
+            Pure vowels. They will immediately school together, moving as one rippling organism.
+            Peaceful — until you add a predator.
+          </div>
+        </div>
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 02 — THE HUNT</div>
+          <div class="exp-type">
+            <span class="c-vowel">a</span><span class="c-vowel">e</span><span class="c-vowel">i</span><span
+              class="c-vowel">o</span><span class="c-apex">z</span>
+          </div>
+          <div class="exp-desc">
+            Four vowels settle into a herd. Then the apex predator appears.
+            Watch the panic scatter. The z will not rest.
+          </div>
+        </div>
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 03 — APEX DUEL</div>
+          <div class="exp-type">
+            <span class="c-apex">q</span><span class="c-vowel">u</span><span class="c-vowel">i</span><span
+              class="c-apex">z</span>
+          </div>
+          <div class="exp-desc">
+            Two apex predators flank two vowel prey. The predators will avoid
+            each other but compete to hunt the same targets. Drama guaranteed.
+          </div>
+        </div>
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 04 — SCAVENGER SWARM</div>
+          <div class="exp-type">
+            <span class="c-scav">1</span><span class="c-scav">2</span><span class="c-scav">3</span><span
+              class="c-scav">4</span><span class="c-scav">5</span><span class="c-scav">6</span><span
+              class="c-cons">t</span>
+          </div>
+          <div class="exp-desc">
+            Six scavengers drift in a loose cloud. Then one consonant wanderer
+            arrives — and it's immediately outnumbered but relentlessly hungry.
+          </div>
+        </div>
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 05 — TITAN PARADE</div>
+          <div class="exp-type">
+            <span class="c-titan">B</span><span class="c-titan">I</span><span class="c-titan">G</span><span
+              class="c-apex">z</span>
+          </div>
+          <div class="exp-desc">
+            Three titans move like glaciers. The apex predator circles them
+            endlessly — unable to hunt them, and too fast to settle down.
+            An apex surrounded by the untouchable.
+          </div>
+        </div>
+
+        <div class="experiment">
+          <div class="exp-title">EXPERIMENT 06 — FULL ECOSYSTEM</div>
+          <div class="exp-type">
+            <span class="c-titan">T</span><span class="c-vowel">h</span><span class="c-vowel">e</span>&nbsp;<span
+              class="c-cons">w</span><span class="c-vowel">o</span><span class="c-cons">r</span><span
+              class="c-cons">l</span><span class="c-cons">d</span>
+          </div>
+          <div class="exp-desc">
+            "The world" — one titan, several vowels, several consonants.
+            Leave it running for 2 minutes. The ecosystem will find its own balance.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CTA ───────────────────────────────────────────────────── -->
+    <hr class="divider" />
+    <div class="cta">
+      <a class="cta-link" href="/">→ &nbsp; ENTER THE LAB</a>
+      <p class="cta-sub">START TYPING TO SPAWN YOUR FIRST CREATURE</p>
     </div>
 
-    <p style="margin-top: 22px; color: var(--fg-dim); font-size: 12px;">
-      On mobile, tap anywhere on the screen to bring up the keyboard.
-      The canvas automatically resizes so your creatures stay visible.
-    </p>
-  </section>
-
-  <!-- ── PUNCTUATION EVENTS ───────────────────────────────────── -->
-  <section>
-    <h2>// PUNCTUATION EVENTS</h2>
-    <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
-      Non-letter keys don't spawn creatures — they trigger environmental events
-      that reshape the entire ecosystem. These work on both desktop and mobile.
-    </p>
-
-    <table class="event-table">
-      <thead>
-        <tr>
-          <th>KEY</th>
-          <th>EVENT</th>
-          <th>WHAT HAPPENS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="key">.</span></td>
-          <td>Day / Night Toggle</td>
-          <td>Canvas atmosphere shifts from void-black to deep indigo. Press again to return to day. The transition is gradual — the background slowly bleeds colour.</td>
-        </tr>
-        <tr>
-          <td><span class="key">!</span></td>
-          <td>Earthquake</td>
-          <td>Screen shakes. A shockwave ring erupts from the canvas centre. Every creature is thrown to a random heading and scatters.</td>
-        </tr>
-        <tr>
-          <td><span class="key">?</span></td>
-          <td>Confusion Field</td>
-          <td>5-second chaos. All steering inverts — prey walks toward predators, flockmates flee each other. Purple tint fills the canvas.</td>
-        </tr>
-        <tr>
-          <td><span class="key">,</span></td>
-          <td>Rain</td>
-          <td>8 seconds of diagonal rain. Vowels (aquatic by nature) gain +18% speed. All other families slow by 32%.</td>
-        </tr>
-        <tr>
-          <td><span class="key">;</span></td>
-          <td>Spore Cloud</td>
-          <td>All creature colours shift by a random ±30–80 hue degrees and slowly drift back. Use it to watch your ecosystem change skin.</td>
-        </tr>
-        <tr>
-          <td><span class="key">:</span></td>
-          <td>Freeze Frame</td>
-          <td>Slow-motion at 20% speed for ~6 seconds, then gradually restores. Death animations, locomotion, and noise steering all slow together.</td>
-        </tr>
-        <tr>
-          <td><span class="key">(</span></td>
-          <td>Gravity Well</td>
-          <td>A 4-second attractor field appears at the canvas centre. All creatures are pulled inward regardless of other steering forces.</td>
-        </tr>
-        <tr>
-          <td><span class="key">)</span></td>
-          <td>Repulsor</td>
-          <td>Same as <code>(</code> but inverted — creatures scatter outward from the centre in all directions.</td>
-        </tr>
-        <tr>
-          <td><span class="key">ENTER</span></td>
-          <td>Genesis</td>
-          <td>Full-canvas light flash. All creatures receive +35% energy and all reproduction cooldowns reset — triggering a mass birth event the next frame.</td>
-        </tr>
-        <tr>
-          <td><span class="key">SPACE</span></td>
-          <td>Pause / Resume</td>
-          <td>Freezes time. Creatures hold their positions. All simulation, energy drain, and behaviours halt until you press Space again.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- ── FAMILIES ──────────────────────────────────────────────── -->
-  <section>
-    <h2>// THE FIVE FAMILIES</h2>
-    <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
-      Every printable character belongs to exactly one family.
-      The family shapes the creature's size, speed, temperament, and role in the food chain.
-    </p>
-
-    <div class="families">
-
-      <div class="family-card" style="--family-color: hsl(170, 90%, 55%); --specimen-char: 'e';">
-        <div class="family-name">HERD ANIMAL</div>
-        <div class="family-trigger">Triggered by: <code>a e i o u &nbsp;A E I O U</code></div>
-        <div class="family-desc">
-          Small, fast, and social. Vowels are drawn toward each other,
-          forming schools that pulse and turn in unison. In the presence
-          of a predator, the herd explodes into a frantic scatter.
-        </div>
-        <div class="tags">
-          <span class="tag">SMALL</span>
-          <span class="tag">FAST</span>
-          <span class="tag">FLOCKING</span>
-          <span class="tag">PREY</span>
-        </div>
-      </div>
-
-      <div class="family-card" style="--family-color: hsl(215, 85%, 62%); --specimen-char: 't';">
-        <div class="family-name">WANDERER</div>
-        <div class="family-trigger">Triggered by: <code>b c d f g h j k l m n p r s t v w y</code><br>
-          <span style="opacity:0.6">(lowercase consonants)</span>
-        </div>
-        <div class="family-desc">
-          Medium-sized and territorial. Wanderers loosely flock with their
-          own kind and hunt scavengers for sustenance. They are safe from
-          each other — but apex predators see them as prey.
-        </div>
-        <div class="tags">
-          <span class="tag">MEDIUM</span>
-          <span class="tag">TERRITORIAL</span>
-          <span class="tag">HUNTS SCAVENGERS</span>
-        </div>
-      </div>
-
-      <div class="family-card" style="--family-color: hsl(32, 90%, 58%); --specimen-char: 'z';">
-        <div class="family-name">APEX PREDATOR</div>
-        <div class="family-trigger">Triggered by: <code>q x z &nbsp;Q X Z</code></div>
-        <div class="family-desc">
-          Larger, faster, and relentless. Apex predators hunt both vowels
-          and consonants on sight. They are solitary by nature — two apex
-          creatures will avoid each other rather than fight.
-        </div>
-        <div class="tags">
-          <span class="tag">LARGE</span>
-          <span class="tag">FASTEST</span>
-          <span class="tag">TOP PREDATOR</span>
-          <span class="tag">SOLITARY</span>
-        </div>
-      </div>
-
-      <div class="family-card" style="--family-color: hsl(85, 75%, 50%); --specimen-char: '7';">
-        <div class="family-name">SCAVENGER</div>
-        <div class="family-trigger">Triggered by: <code>0 1 2 3 4 5 6 7 8 9</code></div>
-        <div class="family-desc">
-          Tiny, slow, and dim. Scavengers drift through the ecosystem in
-          loose clusters. They seem harmless — but every wanderer sees
-          them as food. Their survival strategy is purely numerical.
-        </div>
-        <div class="tags">
-          <span class="tag">TINY</span>
-          <span class="tag">SLOW</span>
-          <span class="tag">WEAK GLOW</span>
-          <span class="tag">SWARM</span>
-        </div>
-      </div>
-
-      <div class="family-card" style="--family-color: hsl(285, 75%, 65%); --specimen-char: 'B';">
-        <div class="family-name">TITAN</div>
-        <div class="family-trigger">Triggered by: <code>B C D F G H J K L M N P R S T V W Y</code><br>
-          <span style="opacity:0.6">(uppercase consonants)</span>
-        </div>
-        <div class="family-desc">
-          Massive, slow, and completely immune to predation. Titans lumber
-          across the canvas doing as they please. Nothing hunts them —
-          they simply are, ancient and indifferent.
-        </div>
-        <div class="tags">
-          <span class="tag">MASSIVE</span>
-          <span class="tag">SLOWEST</span>
-          <span class="tag">IMMUNE</span>
-          <span class="tag">ANCIENT</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ── FOOD CHAIN ─────────────────────────────────────────────── -->
-  <section>
-    <h2>// THE FOOD CHAIN</h2>
-    <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
-      Predators actively chase prey within their perception radius (~120 px).
-      Prey flee in inverse proportion to distance — the closer the predator, the more frantic the escape.
-    </p>
-
-    <div class="food-chain">
-      <div class="chain-row">
-        <span class="chain-predator c-apex">APEX</span>
-        <span class="chain-arrow">──────→</span>
-        <div class="chain-prey">
-          <span class="c-vowel">VOWELS</span>
-          <span class="c-cons">CONSONANTS</span>
-        </div>
-      </div>
-      <div class="chain-row">
-        <span class="chain-predator c-cons">CONSONANT</span>
-        <span class="chain-arrow">──────→</span>
-        <div class="chain-prey">
-          <span class="c-scav">SCAVENGERS</span>
-        </div>
-      </div>
-      <div class="chain-row">
-        <span class="chain-predator c-titan">TITAN</span>
-        <span class="chain-arrow" style="opacity:0.3">──────</span>
-        <span class="chain-note immune-badge">IMMUNE — hunts nothing, hunted by nothing</span>
-      </div>
-    </div>
-
-    <p style="margin-top: 22px; font-size: 12px; color: var(--fg-dim);">
-      A predator that catches prey gains <strong style="color: var(--fg);">+0.42 energy</strong>.
-      The prey dissolves in a burst of particles. Its energy feeds the hunter.
-    </p>
-  </section>
-
-  <!-- ── ENERGY ─────────────────────────────────────────────────── -->
-  <section>
-    <h2>// ENERGY &amp; SURVIVAL</h2>
-    <p style="font-size:12px; margin-bottom: 20px;">
-      Every creature has an energy reserve. It drains continuously at a slow rate.
-      When energy hits zero, the creature starves — same death animation as a manual delete.
-      Energy drain only activates when <strong>5 or more</strong> creatures are alive,
-      so small experiments never die on their own.
-    </p>
-
-    <div class="energy-demo">
-      <span class="energy-label">WELL FED</span>
-      <div class="energy-bar-track"><div class="energy-bar-fill full"></div></div>
-      <span class="energy-status full">NO RING</span>
-    </div>
-    <div class="energy-demo">
-      <span class="energy-label">HUNGRY</span>
-      <div class="energy-bar-track"><div class="energy-bar-fill mid"></div></div>
-      <span class="energy-status mid">ORANGE RING</span>
-    </div>
-    <div class="energy-demo">
-      <span class="energy-label">CRITICAL</span>
-      <div class="energy-bar-track"><div class="energy-bar-fill low"></div></div>
-      <span class="energy-status low">PULSING RED</span>
-    </div>
-
-    <p style="margin-top: 22px; font-size: 12px; color: var(--fg-dim);">
-      The ring that appears around a creature below 55% energy is your early warning system.
-      A pulsing red ring means the creature will die within seconds unless it finds food.
-      An apex predator kept well-fed can outlast many prey populations.
-    </p>
-  </section>
-
-  <!-- ── REPRODUCTION ──────────────────────────────────────────── -->
-  <section>
-    <h2>// REPRODUCTION</h2>
-    <p style="font-size:12px; margin-bottom: 14px;">
-      The ecosystem can grow beyond what you type. When two creatures of the
-      <strong>same family</strong> stay within 50 px of each other and both have
-      <strong>energy above 72%</strong>, they reproduce.
-    </p>
-    <p style="font-size:12px; margin-bottom: 14px;">
-      The offspring inherits a blend of both parents' DNA — color, size, speed,
-      and body shape are mixed, then nudged by up to ±12% mutation.
-      Both parents spend 0.28 energy and enter a 6-second cooldown.
-    </p>
-    <p style="font-size:12px; color: var(--fg-dim);">
-      Population is capped at 80 living creatures. If you type a long sentence and
-      leave it running, the ecosystem will self-regulate — predators thin the herds,
-      survivors reproduce, and a dynamic equilibrium emerges.
-    </p>
-  </section>
-
-  <!-- ── EXPERIMENTS ───────────────────────────────────────────── -->
-  <section>
-    <h2>// SPECIMENS TO TRY</h2>
-    <p class="muted" style="margin-bottom: 24px; font-size: 12px;">
-      Copy any sequence below into the lab and observe what unfolds.
-    </p>
-
-    <div class="experiments">
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 01 — THE HERD</div>
-        <div class="exp-type">
-          <span class="c-vowel">a</span><span class="c-vowel">e</span><span class="c-vowel">i</span><span class="c-vowel">o</span><span class="c-vowel">u</span><span class="c-vowel">a</span><span class="c-vowel">e</span>
-        </div>
-        <div class="exp-desc">
-          Pure vowels. They will immediately school together, moving as one rippling organism.
-          Peaceful — until you add a predator.
-        </div>
-      </div>
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 02 — THE HUNT</div>
-        <div class="exp-type">
-          <span class="c-vowel">a</span><span class="c-vowel">e</span><span class="c-vowel">i</span><span class="c-vowel">o</span><span class="c-apex">z</span>
-        </div>
-        <div class="exp-desc">
-          Four vowels settle into a herd. Then the apex predator appears.
-          Watch the panic scatter. The z will not rest.
-        </div>
-      </div>
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 03 — APEX DUEL</div>
-        <div class="exp-type">
-          <span class="c-apex">q</span><span class="c-vowel">u</span><span class="c-vowel">i</span><span class="c-apex">z</span>
-        </div>
-        <div class="exp-desc">
-          Two apex predators flank two vowel prey. The predators will avoid
-          each other but compete to hunt the same targets. Drama guaranteed.
-        </div>
-      </div>
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 04 — SCAVENGER SWARM</div>
-        <div class="exp-type">
-          <span class="c-scav">1</span><span class="c-scav">2</span><span class="c-scav">3</span><span class="c-scav">4</span><span class="c-scav">5</span><span class="c-scav">6</span><span class="c-cons">t</span>
-        </div>
-        <div class="exp-desc">
-          Six scavengers drift in a loose cloud. Then one consonant wanderer
-          arrives — and it's immediately outnumbered but relentlessly hungry.
-        </div>
-      </div>
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 05 — TITAN PARADE</div>
-        <div class="exp-type">
-          <span class="c-titan">B</span><span class="c-titan">I</span><span class="c-titan">G</span><span class="c-apex">z</span>
-        </div>
-        <div class="exp-desc">
-          Three titans move like glaciers. The apex predator circles them
-          endlessly — unable to hunt them, and too fast to settle down.
-          An apex surrounded by the untouchable.
-        </div>
-      </div>
-
-      <div class="experiment">
-        <div class="exp-title">EXPERIMENT 06 — FULL ECOSYSTEM</div>
-        <div class="exp-type">
-          <span class="c-titan">T</span><span class="c-vowel">h</span><span class="c-vowel">e</span>&nbsp;<span class="c-cons">w</span><span class="c-vowel">o</span><span class="c-cons">r</span><span class="c-cons">l</span><span class="c-cons">d</span>
-        </div>
-        <div class="exp-desc">
-          "The world" — one titan, several vowels, several consonants.
-          Leave it running for 2 minutes. The ecosystem will find its own balance.
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ── CTA ───────────────────────────────────────────────────── -->
-  <hr class="divider" />
-  <div class="cta">
-    <a class="cta-link" href="/">→ &nbsp; ENTER THE LAB</a>
-    <p class="cta-sub">START TYPING TO SPAWN YOUR FIRST CREATURE</p>
-  </div>
-
-</main>
+  </main>
 
 </body>
+
 </html>

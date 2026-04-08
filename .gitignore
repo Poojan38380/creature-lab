@@ -13,6 +13,7 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+*.tmp
 
 # Logs
 *.log
@@ -21,3 +22,13 @@ npm-debug.log*
 # Env
 .env
 .env.local
+
+# AI
+.qwen/
+
+# Coverage (testing)
+coverage/
+
+# Editor configs
+.editorconfig
+*.sublime-*

@@ -1,153 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Typographic Creature Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/cil--animal.svg" />
 </head>
+
 <body>
 
-<div id="ui">
-  <a id="guide-link" href="/guide.html">? FIELD GUIDE</a>
-  <div id="hud">
-    <div class="hrow">POPULATION &nbsp;<span id="hpop">0</span></div>
-    <div class="hrow">SPAWNED &nbsp;<span id="hspawn">0</span></div>
-    <div class="hrow">EXTINCT &nbsp;<span id="hdead">0</span></div>
-  </div>
-  <div id="terminal">
-    <input
-      id="hidden-input"
-      type="text"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-      aria-label="Type to spawn creatures"
-    />
-    <span id="prompt">&gt;&nbsp;SEQUENCE_</span>
-    <div id="seq"><span id="caret"></span></div>
-  </div>
-  <div id="tooltip"></div>
-
-  <div id="quick-guide">
-
-    <div class="qg-header">
-      <div class="qg-logo">TYPOGRAPHIC CREATURE LAB</div>
-      <div class="qg-tagline">every character you type becomes a living organism with its own DNA, body, and behaviour</div>
+  <div id="ui">
+    <a id="guide-link" href="/guide.html">? FIELD GUIDE</a>
+    <div id="hud">
+      <div class="hrow">POPULATION &nbsp;<span id="hpop">0</span></div>
+      <div class="hrow">SPAWNED &nbsp;<span id="hspawn">0</span></div>
+      <div class="hrow">EXTINCT &nbsp;<span id="hdead">0</span></div>
     </div>
+    <div id="terminal">
+      <input id="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        aria-label="Type to spawn creatures" />
+      <span id="prompt">&gt;&nbsp;SEQUENCE_</span>
+      <div id="seq"><span id="caret"></span></div>
+    </div>
+    <div id="tooltip"></div>
 
-    <div class="qg-grid">
+    <div id="quick-guide">
 
-      <!-- COL 1 — Creature families (large screens only) -->
-      <div class="qg-col qg-col-families">
-        <div class="qg-col-heading">THE FIVE FAMILIES</div>
-        <div class="qg-fam-list">
-
-          <div class="qg-fam" style="--fc:hsl(170,90%,55%)">
-            <span class="qg-dot"></span>
-            <div>
-              <div class="qg-fam-name">HERD ANIMAL</div>
-              <div class="qg-fam-chars">a &nbsp;e &nbsp;i &nbsp;o &nbsp;u &nbsp;(any case)</div>
-              <div class="qg-fam-info">Small · fast · flock together · flee apex</div>
-            </div>
-          </div>
-
-          <div class="qg-fam" style="--fc:hsl(32,90%,58%)">
-            <span class="qg-dot"></span>
-            <div>
-              <div class="qg-fam-name">APEX PREDATOR</div>
-              <div class="qg-fam-chars">q &nbsp;x &nbsp;z &nbsp;&nbsp;Q &nbsp;X &nbsp;Z</div>
-              <div class="qg-fam-info">Large · fastest · hunts vowels &amp; wanderers</div>
-            </div>
-          </div>
-
-          <div class="qg-fam" style="--fc:hsl(215,85%,62%)">
-            <span class="qg-dot"></span>
-            <div>
-              <div class="qg-fam-name">WANDERER</div>
-              <div class="qg-fam-chars">b c d f g h j k l m …</div>
-              <div class="qg-fam-info">Medium · territorial · hunts scavengers</div>
-            </div>
-          </div>
-
-          <div class="qg-fam" style="--fc:hsl(85,75%,50%)">
-            <span class="qg-dot"></span>
-            <div>
-              <div class="qg-fam-name">SCAVENGER</div>
-              <div class="qg-fam-chars">0 &nbsp;1 &nbsp;2 &nbsp;3 &nbsp;4 &nbsp;5 &nbsp;6 &nbsp;7 &nbsp;8 &nbsp;9</div>
-              <div class="qg-fam-info">Tiny · slow · hunted by wanderers</div>
-            </div>
-          </div>
-
-          <div class="qg-fam" style="--fc:hsl(285,75%,65%)">
-            <span class="qg-dot"></span>
-            <div>
-              <div class="qg-fam-name">TITAN</div>
-              <div class="qg-fam-chars">B C D F G H J K L M …</div>
-              <div class="qg-fam-info">Massive · immune to predation · solitary</div>
-            </div>
-          </div>
-
+      <div class="qg-header">
+        <div class="qg-logo">TYPOGRAPHIC CREATURE LAB</div>
+        <div class="qg-tagline">every character you type becomes a living organism with its own DNA, body, and behaviour
         </div>
       </div>
 
-      <!-- COL 2 — Controls + Mechanics -->
-      <div class="qg-col">
-        <div class="qg-col-heading">CONTROLS</div>
+      <div class="qg-grid">
 
-        <div class="qg-ctrl-list">
-          <div class="qg-ctrl">
-            <span class="qg-key-badge">A – Z &nbsp;/&nbsp; 0 – 9</span>
-            <div class="qg-ctrl-desc">Spawn a creature — DNA, body, and behaviour are determined by the character</div>
-          </div>
-          <div class="qg-ctrl">
-            <span class="qg-key-badge">BACKSPACE</span>
-            <div class="qg-ctrl-desc">Kill the last creature — particle death animation plays</div>
-          </div>
-          <div class="qg-ctrl">
-            <span class="qg-key-badge">HOVER</span>
-            <div class="qg-ctrl-desc">Inspect a creature — see family, age, speed, eye count</div>
+        <!-- COL 1 — Creature families (large screens only) -->
+        <div class="qg-col qg-col-families">
+          <div class="qg-col-heading">THE FIVE FAMILIES</div>
+          <div class="qg-fam-list">
+
+            <div class="qg-fam" style="--fc:hsl(170,90%,55%)">
+              <span class="qg-dot"></span>
+              <div>
+                <div class="qg-fam-name">HERD ANIMAL</div>
+                <div class="qg-fam-chars">a &nbsp;e &nbsp;i &nbsp;o &nbsp;u &nbsp;(any case)</div>
+                <div class="qg-fam-info">Small · fast · flock together · flee apex</div>
+              </div>
+            </div>
+
+            <div class="qg-fam" style="--fc:hsl(32,90%,58%)">
+              <span class="qg-dot"></span>
+              <div>
+                <div class="qg-fam-name">APEX PREDATOR</div>
+                <div class="qg-fam-chars">q &nbsp;x &nbsp;z &nbsp;&nbsp;Q &nbsp;X &nbsp;Z</div>
+                <div class="qg-fam-info">Large · fastest · hunts vowels &amp; wanderers</div>
+              </div>
+            </div>
+
+            <div class="qg-fam" style="--fc:hsl(215,85%,62%)">
+              <span class="qg-dot"></span>
+              <div>
+                <div class="qg-fam-name">WANDERER</div>
+                <div class="qg-fam-chars">b c d f g h j k l m …</div>
+                <div class="qg-fam-info">Medium · territorial · hunts scavengers</div>
+              </div>
+            </div>
+
+            <div class="qg-fam" style="--fc:hsl(85,75%,50%)">
+              <span class="qg-dot"></span>
+              <div>
+                <div class="qg-fam-name">SCAVENGER</div>
+                <div class="qg-fam-chars">0 &nbsp;1 &nbsp;2 &nbsp;3 &nbsp;4 &nbsp;5 &nbsp;6 &nbsp;7 &nbsp;8 &nbsp;9
+                </div>
+                <div class="qg-fam-info">Tiny · slow · hunted by wanderers</div>
+              </div>
+            </div>
+
+            <div class="qg-fam" style="--fc:hsl(285,75%,65%)">
+              <span class="qg-dot"></span>
+              <div>
+                <div class="qg-fam-name">TITAN</div>
+                <div class="qg-fam-chars">B C D F G H J K L M …</div>
+                <div class="qg-fam-info">Massive · immune to predation · solitary</div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="qg-col-heading" style="margin-top:18px">THE ECOSYSTEM</div>
-        <div class="qg-fact-list">
-          <div class="qg-fact"><span class="qg-arrow">▸</span>Predators chase prey and eat them for energy</div>
-          <div class="qg-fact"><span class="qg-arrow">▸</span>All creatures drain energy — starved ones die</div>
-          <div class="qg-fact"><span class="qg-arrow">▸</span>Same-family pairs reproduce; offspring inherit blended DNA</div>
-          <div class="qg-fact"><span class="qg-arrow">▸</span>The ecosystem self-sustains if you type enough creatures</div>
-          <div class="qg-fact"><span class="qg-arrow">▸</span>Orange ring = hungry &nbsp;·&nbsp; pulsing red = critical</div>
+        <!-- COL 2 — Controls + Mechanics -->
+        <div class="qg-col">
+          <div class="qg-col-heading">CONTROLS</div>
+
+          <div class="qg-ctrl-list">
+            <div class="qg-ctrl">
+              <span class="qg-key-badge">A – Z &nbsp;/&nbsp; 0 – 9</span>
+              <div class="qg-ctrl-desc">Spawn a creature — DNA, body, and behaviour are determined by the character
+              </div>
+            </div>
+            <div class="qg-ctrl">
+              <span class="qg-key-badge">BACKSPACE</span>
+              <div class="qg-ctrl-desc">Kill the last creature — particle death animation plays</div>
+            </div>
+            <div class="qg-ctrl">
+              <span class="qg-key-badge">HOVER</span>
+              <div class="qg-ctrl-desc">Inspect a creature — see family, age, speed, eye count</div>
+            </div>
+          </div>
+
+          <div class="qg-col-heading" style="margin-top:18px">THE ECOSYSTEM</div>
+          <div class="qg-fact-list">
+            <div class="qg-fact"><span class="qg-arrow">▸</span>Predators chase prey and eat them for energy</div>
+            <div class="qg-fact"><span class="qg-arrow">▸</span>All creatures drain energy — starved ones die</div>
+            <div class="qg-fact"><span class="qg-arrow">▸</span>Same-family pairs reproduce; offspring inherit blended
+              DNA</div>
+            <div class="qg-fact"><span class="qg-arrow">▸</span>The ecosystem self-sustains if you type enough creatures
+            </div>
+            <div class="qg-fact"><span class="qg-arrow">▸</span>Orange ring = hungry &nbsp;·&nbsp; pulsing red =
+              critical</div>
+          </div>
         </div>
-      </div>
 
-      <!-- COL 3 — World events -->
-      <div class="qg-col">
-        <div class="qg-col-heading">WORLD EVENTS</div>
-        <div class="qg-ev-list">
-          <div class="qg-ev2"><span class="qg-ev-key">.</span><div><b>Day / Night</b> — canvas bleeds deep indigo</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">!</span><div><b>Earthquake</b> — shockwave ring, all scatter</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">?</span><div><b>Confusion</b> — steering inverts for 5 s</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">,</span><div><b>Rain</b> — land slows, vowels speed up</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">;</span><div><b>Spore Burst</b> — all colours mutate</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">:</span><div><b>Slow Motion</b> — 20 % speed for ~6 s</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">(</span><div><b>Gravity Well</b> — pulls everyone inward</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">)</span><div><b>Repulsor</b> — scatters everyone outward</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">↵</span><div><b>Genesis</b> — mass energy + birth burst</div></div>
-          <div class="qg-ev2"><span class="qg-ev-key">SPC</span><div><b>Pause</b> — freeze time</div></div>
+        <!-- COL 3 — World events -->
+        <div class="qg-col">
+          <div class="qg-col-heading">WORLD EVENTS</div>
+          <div class="qg-ev-list">
+            <div class="qg-ev2"><span class="qg-ev-key">.</span>
+              <div><b>Day / Night</b> — canvas bleeds deep indigo</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">!</span>
+              <div><b>Earthquake</b> — shockwave ring, all scatter</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">?</span>
+              <div><b>Confusion</b> — steering inverts for 5 s</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">,</span>
+              <div><b>Rain</b> — land slows, vowels speed up</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">;</span>
+              <div><b>Spore Burst</b> — all colours mutate</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">:</span>
+              <div><b>Slow Motion</b> — 20 % speed for ~6 s</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">(</span>
+              <div><b>Gravity Well</b> — pulls everyone inward</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">)</span>
+              <div><b>Repulsor</b> — scatters everyone outward</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">↵</span>
+              <div><b>Genesis</b> — mass energy + birth burst</div>
+            </div>
+            <div class="qg-ev2"><span class="qg-ev-key">SPC</span>
+              <div><b>Pause</b> — freeze time</div>
+            </div>
+          </div>
         </div>
-      </div>
 
-    </div><!-- /qg-grid -->
+      </div><!-- /qg-grid -->
 
-    <div class="qg-cta">▶&nbsp;&nbsp;START TYPING TO SPAWN YOUR FIRST CREATURE</div>
+      <div class="qg-cta">▶&nbsp;&nbsp;START TYPING TO SPAWN YOUR FIRST CREATURE</div>
 
-  </div><!-- /quick-guide -->
-  <div id="pause-overlay">
-    <div id="pause-text">PAUSED</div>
-    <div id="pause-sub">PRESS SPACE TO RESUME</div>
+    </div><!-- /quick-guide -->
+    <div id="pause-overlay">
+      <div id="pause-text">PAUSED</div>
+      <div id="pause-sub">PRESS SPACE TO RESUME</div>
+    </div>
   </div>
-</div>
 
-<script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>

@@ -19,18 +19,18 @@ interface TypedEntry {
   creature: Creature;
 }
 
-const creatures: Creature[]   = [];
-const typed:     TypedEntry[] = [];
+const creatures: Creature[] = [];
+const typed: TypedEntry[] = [];
 const grid = new SpatialGrid(120);
 
-let spawnIdx     = 0;
+let spawnIdx = 0;
 let totalSpawned = 0;
-let totalDead    = 0;
+let totalDead = 0;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
 const quickGuideEl = document.getElementById('quick-guide');
-const terminalEl   = document.getElementById('terminal');
+const terminalEl = document.getElementById('terminal');
 
 function setQuickGuide(visible: boolean): void {
   quickGuideEl?.classList.toggle('hidden', !visible);
@@ -104,6 +104,7 @@ inputEl.addEventListener('input', (e: Event) => {
 
 // ── Focus management ─────────────────────────────────────────────
 // Tap/click anywhere → focus the hidden input → keyboard appears on mobile.
+// Aggressive focus strategy: ensure keyboard input is ALWAYS captured.
 
 function focusInput(): void {
   inputEl.focus({ preventScroll: true });
@@ -114,6 +115,20 @@ window.addEventListener('load', focusInput);
 
 // Re-focus on any tap or click anywhere on the page
 document.addEventListener('pointerdown', focusInput);
+
+// Re-focus if the input loses focus (e.g., user clicked elsewhere)
+inputEl.addEventListener('blur', () => {
+  // Small delay to prevent focus fighting with other interactions
+  setTimeout(focusInput, 10);
+});
+
+// Re-focus when visibility changes (e.g., user switches tabs and comes back)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) focusInput();
+});
+
+// Re-focus when window regains focus
+window.addEventListener('focus', focusInput);
 
 // ── Input: mouse (tooltip + hover ring) ──────────────────────────
 
@@ -127,7 +142,7 @@ new p5((sk: p5) => {
 
   // Use visualViewport when available so the canvas shrinks correctly
   // when the mobile keyboard slides up, keeping creatures visible.
-  function vpWidth():  number { return window.visualViewport?.width  ?? sk.windowWidth;  }
+  function vpWidth(): number { return window.visualViewport?.width ?? sk.windowWidth; }
   function vpHeight(): number { return window.visualViewport?.height ?? sk.windowHeight; }
 
   function syncSize(): void {
@@ -173,7 +188,7 @@ new p5((sk: p5) => {
     // Soft persistence — night mode shifts background to deep indigo
     sk.noStroke();
     if (env.isNight) sk.fill(232, 55, 5, 0.2);
-    else             sk.fill(240, 40, 2, 0.2);
+    else sk.fill(240, 40, 2, 0.2);
     sk.rect(0, 0, sk.width, sk.height);
 
     // Ecosystem behaviours (skipped while paused)

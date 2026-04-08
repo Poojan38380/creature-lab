@@ -1,12 +1,32 @@
 {
   "name": "creature-lab",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "A browser-based ecosystem simulator where every keystroke spawns a procedurally generated organism with unique DNA, body, and behaviour.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/creature-lab.git"
+  },
+  "homepage": "https://creature-lab.vercel.app/",
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/creature-lab/issues"
+  },
+  "keywords": [
+    "ecosystem-simulator",
+    "procedural-generation",
+    "creative-coding",
+    "p5js",
+    "keyboard-driven",
+    "generative-art",
+    "creature-simulation"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
     "p5": "^1.9.4"
   },
